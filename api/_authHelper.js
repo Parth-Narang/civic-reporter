@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 // This client is only for verifying tokens
 const supabaseAuth = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
+  process.env.NEXT_PUBLIC_SUPABASE_KEY  // frontend-safe anon key
 );
 
 export async function getUserFromRequest(req, res) {
