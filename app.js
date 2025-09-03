@@ -105,71 +105,7 @@ renderIssues() {
                 dateUpdated: "2025-08-30",
                 userId: "user1",
             },
-            {
-                id: 2,
-                title: "Broken street light on Park Road",
-                description: "The street light pole #47 on Park Road has been out for over a week, creating safety concerns.",
-                category: "Street Light",
-                priority: "Medium",
-                location: "Park Road, Pole #47",
-                photo: null,
-                status: "Submitted",
-                dateSubmitted: "2025-08-25",
-                dateUpdated: "2025-08-25",
-                userId: "user2",
-            },
-            {
-                id: 3,
-                title: "Water supply disruption in Sector 15",
-                description: "No water supply for the past 3 days in Sector 15, Block A. Residents are facing severe inconvenience.",
-                category: "Water Supply",
-                priority: "Emergency",
-                location: "Sector 15, Block A",
-                photo: null,
-                status: "Submitted",
-                dateSubmitted: "2025-08-20",
-                dateUpdated: "2025-08-22",
-                userId: "user3",
-            },
-            {
-                id: 4,
-                title: "Garbage accumulation near bus stop",
-                description: "Large amount of garbage has been accumulating near the central bus stop for several days.",
-                category: "Garbage",
-                priority: "Medium",
-                location: "Central Bus Stop, City Center",
-                photo: null,
-                status: "Submitted",
-                dateSubmitted: "2025-08-29",
-                dateUpdated: "2025-08-29",
-                userId: "user1",
-            },
-            {
-                id: 5,
-                title: "Traffic signal malfunction at 5th Avenue",
-                description: "Traffic signal at the intersection of 5th Avenue and Main Street is not functioning properly causing traffic jams.",
-                category: "Traffic Signal",
-                priority: "High",
-                location: "5th Avenue & Main Street",
-                photo: "https://www.bing.com/images/search?q=pothole+image&id=5424BCA374BC630578A50DE5C4EFBF3603767DC1&FORM=IACFIR",
-                status: "Submitted",
-                dateSubmitted: "2025-08-31",
-                dateUpdated: "2025-08-31",
-                userId: "user4",
-            },
-            {
-                id: 6,
-                title: "Water leakage near Elm Park",
-                description: "There is a major water leakage near Elm Park fountain. The water waste is significant.",
-                category: "Water Supply",
-                priority: "Medium",
-                location: "Elm Park Fountain Area",
-                photo: null,
-                status: "In Progress",
-                dateSubmitted: "2025-08-30",
-                dateUpdated: "2025-09-01",
-                userId: "user2",
-            },
+            // ... your other sample issues ...
         ];
 
         // Show sample issues first
@@ -179,14 +115,33 @@ renderIssues() {
         this.renderIssues();
 
         // Step 2: Fetch actual issues from backend
-        const res = await fetch('/api/issues');
-        if (!res.ok) throw new Error('Failed to fetch issues');
+        // Include Supabase auth token for secure request
+        const token = supabase.auth.session()?.access_token;
+
+        const res = await fetch('/api/issues', {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        if (!res.ok) throw new Error('Failed to fetch issues from backend');
         const data = await res.json();
 
         // Replace sample data with database issues if any
         if (data.length > 0) {
-            this.issues = data;
-            this.filteredIssues = data;
+            // Map Supabase fields to match your frontend properties
+            this.issues = data.map(issue => ({
+                id: issue.id,
+                title: issue.title,
+                description: issue.description,
+                category: issue.category,
+                priority: issue.priority,
+                location: issue.location,
+                photo: issue.photo,
+                status: issue.status,
+                userId: issue.user_id,
+                dateSubmitted: issue.created_at.split('T')[0],
+                dateUpdated: (issue.updated_at || issue.created_at).split('T')[0]
+            }));
+            this.filteredIssues = [...this.issues];
             this.updateStats();
             this.renderIssues();
         }
@@ -195,7 +150,6 @@ renderIssues() {
         console.error(err);
     }
 }
-
 
     saveToStorage() {
         localStorage.setItem('civicIssues', JSON.stringify(this.issues));
@@ -364,7 +318,7 @@ if (reportForm) {
         if (photoFile) {
             const fileName = `${Date.now()}_${photoFile.name}`;
             const { data, error } = await supabase.storage
-                .from('issue-photos') // replace with your bucket name
+                .from('issue-photos') // your bucket name
                 .upload(fileName, photoFile);
 
             if (error) throw error;
@@ -377,21 +331,57 @@ if (reportForm) {
             photoUrl = publicUrl;
         }
 
-        // Send issue to backend
+        // Get current logged-in user token
+        const session = supabase.auth.session();
+        const token = session?.access_token;
+
+        // Send issue to backend with Authorization header
         const res = await fetch('/api/issues', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
             body: JSON.stringify({
-    title,
-    description,
-    category,
-    priority,
-    location,
-    photo: photoUrl,
-    status: "Submitted"  // Add this line
-})
-
+                title,
+                description,
+                category,
+                priority,
+                location,
+                photo: photoUrl,
+                status: "Submitted"
+            })
         });
+
+        if (!res.ok) throw new Error('Failed to submit issue');
+        const newIssue = await res.json();
+
+        // Update frontend arrays
+        this.issues.unshift({
+            ...newIssue,
+            userId: newIssue.user_id,
+            dateSubmitted: newIssue.created_at.split('T')[0],
+            dateUpdated: newIssue.updated_at?.split('T')[0] || newIssue.created_at.split('T')[0]
+        });
+        this.filteredIssues = [...this.issues];
+
+        // Reset form and show success message
+        form.reset();
+        this.clearPhotoPreview();
+        this.showToast('Issue reported successfully!', 'success');
+        this.updateStats();
+
+        // Navigate to My Reports after delay
+        setTimeout(() => {
+            this.showSection('my-reports');
+        }, 2000);
+
+    } catch (err) {
+        console.error(err);
+        this.showToast('Error submitting issue', 'error');
+    }
+}
+
 
         if (!res.ok) throw new Error('Failed to submit issue');
         const newIssue = await res.json();
@@ -748,5 +738,6 @@ if (langSelect) {
 }
 
 });
+
 
 
