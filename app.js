@@ -55,102 +55,24 @@ class CivicReporter {
     }
 
     init() {
-        this.loadSampleData();
+        await this.loadIssues();
         this.bindEvents();
         this.updateStats();
         this.showSection('home');
     }
 
-    loadSampleData() {
-        // Load from localStorage or use sample data
-        const storedIssues = localStorage.getItem('civicIssues');
-        if (storedIssues) {
-            this.issues = JSON.parse(storedIssues);
-        } else {
-            // Sample data from provided JSON including 6 issues
-            this.issues = [
-                {
-                    id: 1,
-                    title: "Large pothole on Main Street",
-                    description: "There is a large pothole near the intersection of Main Street and Oak Avenue that is causing damage to vehicles.",
-                    category: "Pothole",
-                    priority: "High",
-                    location: "Main Street & Oak Avenue",
-                    photo: null,
-                    status: "In Progress",
-                    dateSubmitted: "2025-08-28",
-                    dateUpdated: "2025-08-30",
-                    userId: "user1",
-                },
-                {
-                    id: 2,
-                    title: "Broken street light on Park Road",
-                    description: "The street light pole #47 on Park Road has been out for over a week, creating safety concerns.",
-                    category: "Street Light",
-                    priority: "Medium",
-                    location: "Park Road, Pole #47",
-                    photo: null,
-                    status: "Submitted",
-                    dateSubmitted: "2025-08-25",
-                    dateUpdated: "2025-08-25",
-                    userId: "user2",
-                },
-                {
-                    id: 3,
-                    title: "Water supply disruption in Sector 15",
-                    description: "No water supply for the past 3 days in Sector 15, Block A. Residents are facing severe inconvenience.",
-                    category: "Water Supply",
-                    priority: "Emergency",
-                    location: "Sector 15, Block A",
-                    photo: null,
-                    status: "Submitted",
-                    dateSubmitted: "2025-08-20",
-                    dateUpdated: "2025-08-22",
-                    userId: "user3",
-                },
-                {
-                    id: 4,
-                    title: "Garbage accumulation near bus stop",
-                    description: "Large amount of garbage has been accumulating near the central bus stop for several days.",
-                    category: "Garbage",
-                    priority: "Medium",
-                    location: "Central Bus Stop, City Center",
-                    photo: null,
-                    status: "Submitted",
-                    dateSubmitted: "2025-08-29",
-                    dateUpdated: "2025-08-29",
-                    userId: "user1",
-                },
-                {
-                    id: 5,
-                    title: "Traffic signal malfunction at 5th Avenue",
-                    description: "Traffic signal at the intersection of 5th Avenue and Main Street is not functioning properly causing traffic jams.",
-                    category: "Traffic Signal",
-                    priority: "High",
-                    location: "5th Avenue & Main Street",
-                    photo: "https://www.bing.com/images/search?q=pothole+image&id=5424BCA374BC630578A50DE5C4EFBF3603767DC1&FORM=IACFIR",
-                    status: "Submitted",
-                    dateSubmitted: "2025-08-31",
-                    dateUpdated: "2025-08-31",
-                    userId: "user4",
-                },
-                {
-                    id: 6,
-                    title: "Water leakage near Elm Park",
-                    description: "There is a major water leakage near Elm Park fountain. The water waste is significant.",
-                    category: "Water Supply",
-                    priority: "Medium",
-                    location: "Elm Park Fountain Area",
-                    photo: null,
-                    status: "In Progress",
-                    dateSubmitted: "2025-08-30",
-                    dateUpdated: "2025-09-01",
-                    userId: "user2",
-                },
-            ];
-            this.saveToStorage(); // Save sample data to localStorage
-        }
-    }
+    async loadIssues() {
+  try {
+    const res = await fetch('/api/issues');
+    if (!res.ok) throw new Error('Failed to fetch issues from backend');
+    this.issues = await res.json();
+    this.updateStats();
+  } catch (err) {
+    this.showToast(err.message, 'error');
+    this.issues = [];
+  }
+}
+
 
     saveToStorage() {
         localStorage.setItem('civicIssues', JSON.stringify(this.issues));
@@ -297,51 +219,54 @@ class CivicReporter {
         }
     }
 
-    submitIssue() {
-        const form = document.getElementById('report-form');
+    async submitIssue() {
+  const form = document.getElementById('report-form');
 
-        const title = document.getElementById('issue-title').value.trim();
-        const description = document.getElementById('issue-description').value.trim();
-        const category = document.getElementById('issue-category').value;
-        const priority = document.getElementById('issue-priority').value;
-        const location = document.getElementById('issue-location').value.trim();
-        const photoFile = document.getElementById('issue-photo').files[0];
+  const title = document.getElementById('issue-title').value.trim();
+  const description = document.getElementById('issue-description').value.trim();
+  const category = document.getElementById('issue-category').value;
+  const priority = document.getElementById('issue-priority').value;
+  const location = document.getElementById('issue-location').value.trim();
 
-        // Validation
-        if (!title || !description || !category || !priority || !location) {
-            this.showToast('Please fill in all required fields', 'error');
-            return;
-        }
+  if (!title || !description || !category || !priority || !location) {
+    this.showToast('Please fill in all required fields', 'error');
+    return;
+  }
 
-        // Create new issue
-        const newIssue = {
-            id: Date.now(),
-            title,
-            description,
-            category,
-            priority,
-            location,
-            photo: photoFile ? URL.createObjectURL(photoFile) : null,
-            status: 'Submitted',
-            dateSubmitted: new Date().toISOString().split('T')[0],
-            dateUpdated: new Date().toISOString().split('T')[0],
-            userId: this.currentUser
-        };
+  const formData = {
+    title,
+    description,
+    category,
+    priority,
+    location,
+    photo: null, // Extend to handle photo upload separately if needed
+  };
 
-        this.issues.unshift(newIssue);
-        this.saveToStorage();
+  try {
+    const res = await fetch('/api/issues', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
 
-        // Reset form and show success message
-        form.reset();
-        this.clearPhotoPreview();
-        this.showToast('Issue reported successfully!', 'success');
-        this.updateStats();
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to submit issue');
 
-        // Navigate to My Reports after delay
-        setTimeout(() => {
-            this.showSection('my-reports');
-        }, 2000);
-    }
+    this.showToast('Issue reported successfully!', 'success');
+
+    form.reset();
+    this.clearPhotoPreview();
+
+    await this.loadIssues();
+
+    setTimeout(() => {
+      this.showSection('my-reports');
+    }, 1500);
+  } catch (err) {
+    this.showToast(err.message, 'error');
+  }
+}
+
 
     getCurrentLocation() {
         const locationBtn = document.getElementById('get-location');
@@ -674,3 +599,4 @@ if (langSelect) {
 }
 
 });
+
