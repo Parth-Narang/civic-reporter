@@ -4,47 +4,44 @@ import { getUserFromRequest } from './_authHelper.js';
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY // only for backend
+  process.env.SUPABASE_SERVICE_ROLE_KEY // Backend only key
 );
 
 export default async function handler(req, res) {
   try {
+    // ---------------------
+    // GET: Fetch all issues
+    // ---------------------
     if (req.method === 'GET') {
-      // Fetch all issues from Supabase
       const { data, error } = await supabase
         .from('issues')
         .select('*')
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error(error);
+        console.error('Supabase GET error:', error);
         return res.status(400).json({ error: error.message });
       }
 
-      // Return data (frontend will use sample if empty)
-      return res.status(200).json(data);
+      return res.status(200).json(data || []);
     }
 
+    // ---------------------
+    // POST: Submit new issue
+    // ---------------------
     if (req.method === 'POST') {
+      // Get user from auth token
       const user = await getUserFromRequest(req, res);
-      if (!user) return;
+      if (!user) return; // Already handled in _authHelper
 
-      const {
-        title,
-        description,
-        status,
-        category,
-        priority,
-        location,
-        photo
-      } = req.body || {};
+      const { title, description, status, category, priority, location, photo } = req.body || {};
 
-      // Basic validation
+      // Validation
       if (!title || !description || !status || !category || !priority || !location) {
         return res.status(400).json({ error: 'All fields are required' });
       }
 
-      // Insert into Supabase
+      // Insert issue
       const { data, error } = await supabase
         .from('issues')
         .insert({
@@ -61,16 +58,20 @@ export default async function handler(req, res) {
         .single();
 
       if (error) {
-        console.error(error);
+        console.error('Supabase POST error:', error);
         return res.status(400).json({ error: error.message });
       }
 
       return res.status(201).json(data);
     }
 
+    // ---------------------
+    // Other methods
+    // ---------------------
     return res.status(405).json({ error: 'Method not allowed' });
+
   } catch (e) {
-    console.error(e);
+    console.error('API error:', e);
     return res.status(500).json({ error: e.message });
   }
 }
