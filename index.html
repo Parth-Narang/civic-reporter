@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Civic Issue Reporting System</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <!-- Header Navigation -->
+<header class="header">
+    <nav class="nav container" role="navigation" aria-label="Main Navigation">
+        <div class="nav__brand">
+            <h1 data-i18n="Civic Reporter">Civic Reporter</h1>
+        </div>
+        <ul class="nav__menu">
+            <li><a href="#home" class="nav__link active" data-nav="home" role="link" tabindex="0" data-i18n="Home">Home</a></li>
+            <li><a href="#report" class="nav__link" data-nav="report" role="link" tabindex="0" data-i18n="Report Issue">Report Issue</a></li>
+            <li><a href="#my-reports" class="nav__link" data-nav="my-reports" role="link" tabindex="0" data-i18n="My Reports">My Reports</a></li>
+            <li><a href="#admin" class="nav__link" data-nav="admin" role="link" tabindex="0" data-i18n="Admin Dashboard">Admin Dashboard</a></li>
+            <li class="nav__lang">
+                <select id="language-select" aria-label="Select Language">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                </select>
+            </li>
+        </ul>
+        <button class="nav__toggle" aria-label="Toggle navigation menu" aria-haspopup="true" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+</header>
+
+
+    <main class="main" role="main">
+        <!-- Home Section -->
+        <section id="home" class="section section--home active" tabindex="-1" aria-labelledby="home-title">
+            <div class="hero">
+                <div class="container">
+                    <div class="hero__content">
+                        <h2 class="hero__title" id="home-title">Civic Issue Reporting System</h2>
+                        <p class="hero__description">
+                            Help improve your community by reporting civic issues. Our platform enables citizens to report problems and track their resolution in real-time.
+                        </p>
+                        <div class="hero__actions">
+                            <button class="btn btn--primary btn--lg" data-nav="report" type="button">Report an Issue</button>
+                            <button class="btn btn--outline btn--lg" data-nav="my-reports" type="button">View Reports</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="container" aria-label="Statistics">
+                    <div class="stats__grid">
+                        <div class="stats__card" role="region" aria-labelledby="total-issues-label">
+                            <h3 class="stats__number" id="total-issues">0</h3>
+                            <p class="stats__label" id="total-issues-label">Total Issues</p>
+                        </div>
+                        <div class="stats__card" role="region" aria-labelledby="resolved-issues-label">
+                            <h3 class="stats__number" id="resolved-issues">0</h3>
+                            <p class="stats__label" id="resolved-issues-label">Resolved</p>
+                        </div>
+                        <div class="stats__card" role="region" aria-labelledby="pending-issues-label">
+                            <h3 class="stats__number" id="pending-issues">0</h3>
+                            <p class="stats__label" id="pending-issues-label">Pending</p>
+                        </div>
+                        <div class="stats__card" role="region" aria-labelledby="in-progress-issues-label">
+                            <h3 class="stats__number" id="in-progress-issues">0</h3>
+                            <p class="stats__label" id="in-progress-issues-label">In Progress</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Report Issue Section -->
+        <section id="report" class="section section--report" tabindex="-1" aria-labelledby="report-title">
+            <div class="container">
+                <div class="section__header">
+                    <h2 id="report-title">Report an Issue</h2>
+                    <p>Help us improve your community by reporting civic issues.</p>
+                </div>
+
+                <form class="report-form" id="report-form" aria-describedby="report-desc" novalidate>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="issue-title">Issue Title <span aria-hidden="true">*</span><span class="sr-only">required</span></label>
+                            <input type="text" id="issue-title" class="form-control" required aria-required="true" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="issue-category">Category <span aria-hidden="true">*</span><span class="sr-only">required</span></label>
+                            <select id="issue-category" class="form-control" required aria-required="true">
+                                <option value="">Select Category</option>
+                                <option value="Pothole">Pothole</option>
+                                <option value="Street Light">Street Light</option>
+                                <option value="Water Supply">Water Supply</option>
+                                <option value="Garbage">Garbage</option>
+                                <option value="Traffic Signal">Traffic Signal</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="issue-priority">Priority <span aria-hidden="true">*</span><span class="sr-only">required</span></label>
+                            <select id="issue-priority" class="form-control" required aria-required="true">
+                                <option value="">Select Priority</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                                <option value="Emergency">Emergency</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="issue-location">Location <span aria-hidden="true">*</span><span class="sr-only">required</span></label>
+                            <div class="location-input">
+                                <input type="text" id="issue-location" class="form-control" placeholder="Enter address or location" required aria-required="true" />
+                                <button type="button" class="btn btn--secondary btn--sm location-btn" id="get-location" aria-label="Get current location via GPS">
+                                    📍 GPS
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="issue-description">Description <span aria-hidden="true">*</span><span class="sr-only">required</span></label>
+                        <textarea id="issue-description" class="form-control" rows="4" required aria-required="true"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="issue-photo">Upload Photo</label>
+                        <input type="file" id="issue-photo" class="form-control" accept="image/*" aria-describedby="photo-preview" />
+                        <div class="photo-preview" id="photo-preview" aria-live="polite" aria-atomic="true"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn--primary btn--lg btn--full-width" aria-label="Submit issue report">
+                            Submit Issue Report
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- My Reports Section -->
+        <section id="my-reports" class="section section--reports" tabindex="-1" aria-labelledby="my-reports-title">
+            <div class="container">
+                <div class="section__header">
+                    <h2 id="my-reports-title">My Reports</h2>
+                    <p>Track the status of your submitted issues.</p>
+                </div>
+
+                <div class="reports-controls">
+                    <div class="search-filter">
+                        <input type="text" id="reports-search" class="form-control" placeholder="Search reports..." aria-label="Search reports" />
+                        <select id="reports-status-filter" class="form-control" aria-label="Filter by status">
+                            <option value="">All Status</option>
+                            <option value="Submitted">Submitted</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Resolved">Resolved</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                        <select id="reports-category-filter" class="form-control" aria-label="Filter by category">
+                            <option value="">All Categories</option>
+                            <option value="Pothole">Pothole</option>
+                            <option value="Street Light">Street Light</option>
+                            <option value="Water Supply">Water Supply</option>
+                            <option value="Garbage">Garbage</option>
+                            <option value="Traffic Signal">Traffic Signal</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="reports-list" id="reports-list" role="region" aria-live="polite" aria-atomic="true" tabindex="0">
+                    <!-- Reports will be dynamically populated -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Dashboard Section -->
+        <section id="admin" class="section section--admin" tabindex="-1" aria-labelledby="admin-title">
+            <div class="container">
+                <div class="section__header">
+                    <h2 id="admin-title">Admin Dashboard</h2>
+                    <p>Manage and update reported issues.</p>
+                </div>
+
+                <div class="admin-stats" aria-label="Administrator statistics">
+                    <div class="stats__grid">
+                        <div class="stats__card" role="region" aria-labelledby="admin-total-label">
+                            <h3 class="stats__number" id="admin-total">0</h3>
+                            <p class="stats__label" id="admin-total-label">Total Reports</p>
+                        </div>
+                        <div class="stats__card" role="region" aria-labelledby="admin-submitted-label">
+                            <h3 class="stats__number" id="admin-submitted">0</h3>
+                            <p class="stats__label" id="admin-submitted-label">Submitted</p>
+                        </div>
+                        <div class="stats__card" role="region" aria-labelledby="admin-progress-label">
+                            <h3 class="stats__number" id="admin-progress">0</h3>
+                            <p class="stats__label" id="admin-progress-label">In Progress</p>
+                        </div>
+                        <div class="stats__card" role="region" aria-labelledby="admin-resolved-label">
+                            <h3 class="stats__number" id="admin-resolved">0</h3>
+                            <p class="stats__label" id="admin-resolved-label">Resolved</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-controls">
+                    <div class="search-filter">
+                        <input type="text" id="admin-search" class="form-control" placeholder="Search all reports..." aria-label="Search all reports" />
+                        <select id="admin-status-filter" class="form-control" aria-label="Filter by status">
+                            <option value="">All Status</option>
+                            <option value="Submitted">Submitted</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Resolved">Resolved</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                        <select id="admin-category-filter" class="form-control" aria-label="Filter by category">
+                            <option value="">All Categories</option>
+                            <option value="Pothole">Pothole</option>
+                            <option value="Street Light">Street Light</option>
+                            <option value="Water Supply">Water Supply</option>
+                            <option value="Garbage">Garbage</option>
+                            <option value="Traffic Signal">Traffic Signal</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="admin-list" id="admin-list" role="region" aria-live="polite" aria-atomic="true" tabindex="0">
+                    <!-- Admin reports will be dynamically populated -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Civic Issue Reporting System. Building better communities together.</p>
+        </div>
+    </footer>
+
+    <!-- Issue Detail Modal -->
+    <div class="modal hidden" id="issue-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-body">
+        <div class="modal__backdrop"></div>
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3 class="modal__title" id="modal-title">Issue Details</h3>
+                <button class="modal__close" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal__body" id="modal-body" tabindex="0">
+                <!-- Content will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Success/Error Message Toast -->
+    <div class="toast hidden" id="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast__content">
+            <span class="toast__message" id="toast-message"></span>
+            <button class="toast__close" aria-label="Close message">&times;</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
