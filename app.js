@@ -57,10 +57,9 @@ class CivicReporter {
     }
 
   async init() {
-    await this.loadIssues();  // Load sample data first, then fetch from backend
-    this.bindEvents();
-    this.updateStats();
-    this.showSection('home');
+    await this.loadIssues();      // Load sample data first, then fetch from backend
+    this.bindEvents();            // Bind all buttons, forms, filters
+    this.showSection('home');     // Show home section by default
 }
 
 renderIssues() {
@@ -105,7 +104,7 @@ renderIssues() {
                 dateUpdated: "2025-08-30",
                 userId: "user1",
             },
-            // ... your other sample issues ...
+            // ... other sample issues ...
         ];
 
         // Show sample issues first
@@ -115,11 +114,11 @@ renderIssues() {
         this.renderIssues();
 
         // Step 2: Fetch actual issues from backend
-        // Include Supabase auth token for secure request
-        const token = supabase.auth.session()?.access_token;
+        const { data: sessionData } = await supabase.auth.getSession();
+        const token = sessionData?.session?.access_token;
 
         const res = await fetch('/api/issues', {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: token ? { Authorization: `Bearer ${token}` } : {}
         });
 
         if (!res.ok) throw new Error('Failed to fetch issues from backend');
@@ -127,7 +126,6 @@ renderIssues() {
 
         // Replace sample data with database issues if any
         if (data.length > 0) {
-            // Map Supabase fields to match your frontend properties
             this.issues = data.map(issue => ({
                 id: issue.id,
                 title: issue.title,
@@ -150,6 +148,7 @@ renderIssues() {
         console.error(err);
     }
 }
+
 
     saveToStorage() {
         localStorage.setItem('civicIssues', JSON.stringify(this.issues));
@@ -318,7 +317,7 @@ if (reportForm) {
         if (photoFile) {
             const fileName = `${Date.now()}_${photoFile.name}`;
             const { data, error } = await supabase.storage
-                .from('issue-photos') // your bucket name
+                .from('issue-photos')
                 .upload(fileName, photoFile);
 
             if (error) throw error;
@@ -382,30 +381,6 @@ if (reportForm) {
     }
 }
 
-
-        if (!res.ok) throw new Error('Failed to submit issue');
-        const newIssue = await res.json();
-
-        // Update frontend arrays
-        this.issues.unshift(newIssue);
-        this.filteredIssues.unshift(newIssue);
-
-        // Reset form and show success message
-        form.reset();
-        this.clearPhotoPreview();
-        this.showToast('Issue reported successfully!', 'success');
-        this.updateStats();
-
-        // Navigate to My Reports after delay
-        setTimeout(() => {
-            this.showSection('my-reports');
-        }, 2000);
-
-    } catch (err) {
-        console.error(err);
-        this.showToast('Error submitting issue', 'error');
-    }
-}
 
     getCurrentLocation() {
         const locationBtn = document.getElementById('get-location');
@@ -738,6 +713,7 @@ if (langSelect) {
 }
 
 });
+
 
 
 
