@@ -1,23 +1,31 @@
+// /api/_authHelper.js
 import { createClient } from '@supabase/supabase-js';
 
-// This client is only for verifying tokens
-const supabaseAuth = createClient(
+const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_KEY  // frontend-safe anon key
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
 export async function getUserFromRequest(req, res) {
-  const authHeader = req.headers.authorization || '';
-  const token = authHeader.replace('Bearer ', '');
-  if (!token) {
-    res.status(401).json({ error: 'No token provided' });
-    return null;
-  }
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            res.status(401).json({ error: 'Authorization header missing' });
+            return null;
+        }
 
-  const { data, error } = await supabaseAuth.auth.getUser(token);
-  if (error || !data?.user) {
-    res.status(401).json({ error: 'Invalid or expired token' });
-    return null;
-  }
-  return data.user; // contains id, email, etc.
+        const token = authHeader.split(' ')[1]; // "Bearer <token>"
+        const { data: { user }, error } = await supabase.auth.getUser(token);
+
+        if (error || !user) {
+            res.status(401).json({ error: 'Invalid or expired token' });
+            return null;
+        }
+
+        return user;
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Auth check failed' });
+        return null;
+    }
 }
