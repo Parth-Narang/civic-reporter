@@ -44,8 +44,6 @@ function setLanguage(lang = 'en') {
 
 // Civic Issue Reporting System JavaScript
 
-import { supabase } from './supabaseClient.js';
-
 class CivicReporter {
     constructor() {
         this.currentUser = 'user1'; // Simulate current user
@@ -56,99 +54,103 @@ class CivicReporter {
         this.init();
     }
 
-  async init() {
-    await this.loadIssues();      // Load sample data first, then fetch from backend
-    this.bindEvents();            // Bind all buttons, forms, filters
-    this.showSection('home');     // Show home section by default
-}
-
-renderIssues() {
-    const issueList = document.getElementById('issues-list'); // make sure this exists in your HTML
-    if (!issueList) return;
-
-    issueList.innerHTML = ''; // clear existing issues
-
-    this.issues.forEach(issue => {
-        const issueItem = document.createElement('div');
-        issueItem.classList.add('issue-item');
-
-        issueItem.innerHTML = `
-            <h3>${issue.title}</h3>
-            <p><strong>Category:</strong> ${issue.category}</p>
-            <p><strong>Priority:</strong> ${issue.priority}</p>
-            <p><strong>Location:</strong> ${issue.location}</p>
-            <p><strong>Status:</strong> ${issue.status}</p>
-            <p><strong>Submitted:</strong> ${issue.dateSubmitted}</p>
-            <p>${issue.description}</p>
-            ${issue.photo ? `<img src="${issue.photo}" alt="Issue photo" class="issue-photo" />` : ''}
-        `;
-
-        issueList.appendChild(issueItem);
-    });
-}
-  
-    async loadIssues() {
-    try {
-        // Step 1: Show sample data first
-        const sampleIssues = [
-            {
-                id: 1,
-                title: "Large pothole on Main Street",
-                description: "There is a large pothole near the intersection of Main Street and Oak Avenue that is causing damage to vehicles.",
-                category: "Pothole",
-                priority: "High",
-                location: "Main Street & Oak Avenue",
-                photo: null,
-                status: "In Progress",
-                dateSubmitted: "2025-08-28",
-                dateUpdated: "2025-08-30",
-                userId: "user1",
-            },
-            // ... other sample issues ...
-        ];
-
-        // Show sample issues first
-        this.issues = [...sampleIssues];
-        this.filteredIssues = [...sampleIssues];
+    init() {
+        this.loadSampleData();
+        this.bindEvents();
         this.updateStats();
-        this.renderIssues();
-
-        // Step 2: Fetch actual issues from backend
-        const { data: sessionData } = await supabase.auth.getSession();
-        const token = sessionData?.session?.access_token;
-
-        const res = await fetch('/api/issues', {
-            headers: token ? { Authorization: `Bearer ${token}` } : {}
-        });
-
-        if (!res.ok) throw new Error('Failed to fetch issues from backend');
-        const data = await res.json();
-
-        // Replace sample data with database issues if any
-        if (data.length > 0) {
-            this.issues = data.map(issue => ({
-                id: issue.id,
-                title: issue.title,
-                description: issue.description,
-                category: issue.category,
-                priority: issue.priority,
-                location: issue.location,
-                photo: issue.photo,
-                status: issue.status,
-                userId: issue.user_id,
-                dateSubmitted: issue.created_at.split('T')[0],
-                dateUpdated: (issue.updated_at || issue.created_at).split('T')[0]
-            }));
-            this.filteredIssues = [...this.issues];
-            this.updateStats();
-            this.renderIssues();
-        }
-
-    } catch (err) {
-        console.error(err);
+        this.showSection('home');
     }
-}
 
+    loadSampleData() {
+        // Load from localStorage or use sample data
+        const storedIssues = localStorage.getItem('civicIssues');
+        if (storedIssues) {
+            this.issues = JSON.parse(storedIssues);
+        } else {
+            // Sample data from provided JSON including 6 issues
+            this.issues = [
+                {
+                    id: 1,
+                    title: "Large pothole on Main Street",
+                    description: "There is a large pothole near the intersection of Main Street and Oak Avenue that is causing damage to vehicles.",
+                    category: "Pothole",
+                    priority: "High",
+                    location: "Main Street & Oak Avenue",
+                    photo: null,
+                    status: "In Progress",
+                    dateSubmitted: "2025-08-28",
+                    dateUpdated: "2025-08-30",
+                    userId: "user1",
+                },
+                {
+                    id: 2,
+                    title: "Broken street light on Park Road",
+                    description: "The street light pole #47 on Park Road has been out for over a week, creating safety concerns.",
+                    category: "Street Light",
+                    priority: "Medium",
+                    location: "Park Road, Pole #47",
+                    photo: null,
+                    status: "Submitted",
+                    dateSubmitted: "2025-08-25",
+                    dateUpdated: "2025-08-25",
+                    userId: "user2",
+                },
+                {
+                    id: 3,
+                    title: "Water supply disruption in Sector 15",
+                    description: "No water supply for the past 3 days in Sector 15, Block A. Residents are facing severe inconvenience.",
+                    category: "Water Supply",
+                    priority: "Emergency",
+                    location: "Sector 15, Block A",
+                    photo: null,
+                    status: "Submitted",
+                    dateSubmitted: "2025-08-20",
+                    dateUpdated: "2025-08-22",
+                    userId: "user3",
+                },
+                {
+                    id: 4,
+                    title: "Garbage accumulation near bus stop",
+                    description: "Large amount of garbage has been accumulating near the central bus stop for several days.",
+                    category: "Garbage",
+                    priority: "Medium",
+                    location: "Central Bus Stop, City Center",
+                    photo: null,
+                    status: "Submitted",
+                    dateSubmitted: "2025-08-29",
+                    dateUpdated: "2025-08-29",
+                    userId: "user1",
+                },
+                {
+                    id: 5,
+                    title: "Traffic signal malfunction at 5th Avenue",
+                    description: "Traffic signal at the intersection of 5th Avenue and Main Street is not functioning properly causing traffic jams.",
+                    category: "Traffic Signal",
+                    priority: "High",
+                    location: "5th Avenue & Main Street",
+                    photo: "https://www.bing.com/images/search?q=pothole+image&id=5424BCA374BC630578A50DE5C4EFBF3603767DC1&FORM=IACFIR",
+                    status: "Submitted",
+                    dateSubmitted: "2025-08-31",
+                    dateUpdated: "2025-08-31",
+                    userId: "user4",
+                },
+                {
+                    id: 6,
+                    title: "Water leakage near Elm Park",
+                    description: "There is a major water leakage near Elm Park fountain. The water waste is significant.",
+                    category: "Water Supply",
+                    priority: "Medium",
+                    location: "Elm Park Fountain Area",
+                    photo: null,
+                    status: "In Progress",
+                    dateSubmitted: "2025-08-30",
+                    dateUpdated: "2025-09-01",
+                    userId: "user2",
+                },
+            ];
+            this.saveToStorage(); // Save sample data to localStorage
+        }
+    }
 
     saveToStorage() {
         localStorage.setItem('civicIssues', JSON.stringify(this.issues));
@@ -173,13 +175,14 @@ renderIssues() {
             });
         }
 
+        // Form submission
         const reportForm = document.getElementById('report-form');
-if (reportForm) {
-    reportForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        await this.submitIssue(); // make sure to await the async function
-    });
-}
+        if (reportForm) {
+            reportForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.submitIssue();
+            });
+        }
 
         // GPS location
         const locationBtn = document.getElementById('get-location');
@@ -294,75 +297,39 @@ if (reportForm) {
         }
     }
 
-    async submitIssue() {
-    const form = document.getElementById('report-form');
+    submitIssue() {
+        const form = document.getElementById('report-form');
 
-    const title = document.getElementById('issue-title').value.trim();
-    const description = document.getElementById('issue-description').value.trim();
-    const category = document.getElementById('issue-category').value;
-    const priority = document.getElementById('issue-priority').value;
-    const location = document.getElementById('issue-location').value.trim();
-    const photoFile = document.getElementById('issue-photo').files[0];
+        const title = document.getElementById('issue-title').value.trim();
+        const description = document.getElementById('issue-description').value.trim();
+        const category = document.getElementById('issue-category').value;
+        const priority = document.getElementById('issue-priority').value;
+        const location = document.getElementById('issue-location').value.trim();
+        const photoFile = document.getElementById('issue-photo').files[0];
 
-    // Validation
-    if (!title || !description || !category || !priority || !location) {
-        this.showToast('Please fill in all required fields', 'error');
-        return;
-    }
-
-    try {
-        let photoUrl = null;
-
-        // Optional image upload to Supabase
-        if (photoFile) {
-            const fileName = `${Date.now()}_${photoFile.name}`;
-            const { data, error } = await supabase.storage
-                .from('issue-photos')
-                .upload(fileName, photoFile);
-
-            if (error) throw error;
-
-            const { publicUrl, error: urlError } = supabase.storage
-                .from('issue-photos')
-                .getPublicUrl(fileName);
-
-            if (urlError) throw urlError;
-            photoUrl = publicUrl;
+        // Validation
+        if (!title || !description || !category || !priority || !location) {
+            this.showToast('Please fill in all required fields', 'error');
+            return;
         }
 
-        // Get current logged-in user token
-        const session = supabase.auth.session();
-        const token = session?.access_token;
+        // Create new issue
+        const newIssue = {
+            id: Date.now(),
+            title,
+            description,
+            category,
+            priority,
+            location,
+            photo: photoFile ? URL.createObjectURL(photoFile) : null,
+            status: 'Submitted',
+            dateSubmitted: new Date().toISOString().split('T')[0],
+            dateUpdated: new Date().toISOString().split('T')[0],
+            userId: this.currentUser
+        };
 
-        // Send issue to backend with Authorization header
-        const res = await fetch('/api/issues', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                title,
-                description,
-                category,
-                priority,
-                location,
-                photo: photoUrl,
-                status: "Submitted"
-            })
-        });
-
-        if (!res.ok) throw new Error('Failed to submit issue');
-        const newIssue = await res.json();
-
-        // Update frontend arrays
-        this.issues.unshift({
-            ...newIssue,
-            userId: newIssue.user_id,
-            dateSubmitted: newIssue.created_at.split('T')[0],
-            dateUpdated: newIssue.updated_at?.split('T')[0] || newIssue.created_at.split('T')[0]
-        });
-        this.filteredIssues = [...this.issues];
+        this.issues.unshift(newIssue);
+        this.saveToStorage();
 
         // Reset form and show success message
         form.reset();
@@ -374,13 +341,7 @@ if (reportForm) {
         setTimeout(() => {
             this.showSection('my-reports');
         }, 2000);
-
-    } catch (err) {
-        console.error(err);
-        this.showToast('Error submitting issue', 'error');
     }
-}
-
 
     getCurrentLocation() {
         const locationBtn = document.getElementById('get-location');
@@ -713,7 +674,3 @@ if (langSelect) {
 }
 
 });
-
-
-
-
