@@ -44,6 +44,8 @@ function setLanguage(lang = 'en') {
 
 // Civic Issue Reporting System JavaScript
 
+import { supabase } from './supabaseClient.js';
+
 class CivicReporter {
     constructor() {
         this.currentUser = 'user1'; // Simulate current user
@@ -380,13 +382,15 @@ if (reportForm) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                title,
-                description,
-                category,
-                priority,
-                location,
-                photo: photoUrl
-            })
+    title,
+    description,
+    category,
+    priority,
+    location,
+    photo: photoUrl,
+    status: "Submitted"  // Add this line
+})
+
         });
 
         if (!res.ok) throw new Error('Failed to submit issue');
@@ -744,4 +748,5 @@ if (langSelect) {
 }
 
 });
+
 
