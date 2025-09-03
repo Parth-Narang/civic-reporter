@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Civic Portal - Government of India</title>
+    <link rel="stylesheet" href="verse.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="gov-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="https://tse2.mm.bing.net/th/id/OIP.59VE6RlCm7jPXOX71WbcNwHaEe?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Government Logo" class="gov-logo-image">
+                    <div class="logo-text">
+                        <h1>Digital Civic Portal</h1>
+                        <p>Government of India</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <div class="search-container">
+                        <input type="text" id="headerSearch" placeholder="Search issues, tenders..." class="form-control search-input">
+                        <button class="btn btn--primary search-btn">Search</button>
+                    </div>
+                    <div class="user-menu">
+                        <button class="btn btn--secondary" onclick="toggleUserRole()">
+                            <span id="currentRole">Citizen</span> ▼
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="#" onclick="showSection('home')" class="nav-active">Home</a></li>
+                <li><a href="#" onclick="showSection('report')">Report Issue</a></li>
+                <li><a href="#" onclick="showSection('track')">Track Issues</a></li>
+                <li><a href="#" onclick="showSection('tenders')">Tender Portal</a></li>
+                <li><a href="#" onclick="showSection('about')">About</a></li>
+                <li><a href="#" onclick="showSection('contact')">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero-section">
+                <div class="container">
+                    <div class="hero-content">
+                        <h2>Welcome to Digital Civic Portal</h2>
+                        <p>Report civic issues, track progress, and participate in government tenders</p>
+                        <div class="quick-actions">
+                            <button class="btn btn--primary btn--lg" onclick="showSection('report')">Report New Issue</button>
+                            <button class="btn btn--outline btn--lg" onclick="showSection('track')">Track My Issues</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News & Updates -->
+            <div class="container">
+                <section class="news-section">
+                    <h3>Latest News & Updates</h3>
+                    <div class="news-grid" id="newsContainer">
+                        <!-- News items will be populated by JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Issue Categories -->
+                <section class="categories-section">
+                    <h3>Report Issues by Category</h3>
+                    <div class="categories-grid">
+                        <div class="category-card" onclick="selectIssueType('Pothole')">
+                            <div class="category-icon">🕳️</div>
+                            <h4>Potholes</h4>
+                            <p>Road maintenance issues</p>
+                        </div>
+                        <div class="category-card" onclick="selectIssueType('Street Light')">
+                            <div class="category-icon">💡</div>
+                            <h4>Street Lights</h4>
+                            <p>Lighting problems</p>
+                        </div>
+                        <div class="category-card" onclick="selectIssueType('Garbage')">
+                            <div class="category-icon">🗑️</div>
+                            <h4>Garbage</h4>
+                            <p>Waste collection issues</p>
+                        </div>
+                        <div class="category-card" onclick="selectIssueType('Water Supply')">
+                            <div class="category-icon">💧</div>
+                            <h4>Water Supply</h4>
+                            <p>Water related problems</p>
+                        </div>
+                        <div class="category-card" onclick="selectIssueType('Traffic Signal')">
+                            <div class="category-icon">🚦</div>
+                            <h4>Traffic</h4>
+                            <p>Traffic management</p>
+                        </div>
+                        <div class="category-card" onclick="selectIssueType('Other')">
+                            <div class="category-icon">📝</div>
+                            <h4>Other</h4>
+                            <p>General civic issues</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <!-- Report Issue Section -->
+        <section id="report" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Report a Civic Issue</h2>
+                    <p>Help us improve our city by reporting civic issues</p>
+                </div>
+
+                <form id="issueReportForm" class="report-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Issue Type *</label>
+                            <select id="issueType" class="form-control" required>
+                                <option value="">Select Issue Type</option>
+                                <option value="Pothole">Pothole</option>
+                                <option value="Street Light">Street Light</option>
+                                <option value="Garbage">Garbage Collection</option>
+                                <option value="Water Supply">Water Supply</option>
+                                <option value="Traffic Signal">Traffic Signal</option>
+                                <option value="Sewage">Sewage</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Priority *</label>
+                            <select id="issuePriority" class="form-control" required>
+                                <option value="">Select Priority</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                                <option value="Critical">Critical</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Location *</label>
+                        <input type="text" id="issueLocation" class="form-control" placeholder="Enter location/address" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Description *</label>
+                        <textarea id="issueDescription" class="form-control" rows="4" placeholder="Describe the issue in detail" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Your Contact Number</label>
+                        <input type="tel" id="reporterPhone" class="form-control" placeholder="+91-XXXXXXXXXX">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn--primary">Submit Issue Report</button>
+                        <button type="reset" class="btn btn--secondary">Clear Form</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Track Issues Section -->
+        <section id="track" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Track Civic Issues</h2>
+                    <p>Monitor the progress of reported civic issues</p>
+                </div>
+
+                <div class="tracking-controls">
+                    <div class="search-filters">
+                        <input type="text" id="trackingSearch" class="form-control" placeholder="Search by ID, location, or type">
+                        <select id="statusFilter" class="form-control">
+                            <option value="">All Status</option>
+                            <option value="Submitted">Submitted</option>
+                            <option value="Under Review">Under Review</option>
+                            <option value="Approved">Approved</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Resolved">Resolved</option>
+                        </select>
+                        <select id="typeFilter" class="form-control">
+                            <option value="">All Types</option>
+                            <option value="Pothole">Pothole</option>
+                            <option value="Street Light">Street Light</option>
+                            <option value="Garbage">Garbage</option>
+                            <option value="Water Supply">Water Supply</option>
+                            <option value="Traffic Signal">Traffic Signal</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="issues-grid" id="issuesContainer">
+                    <!-- Issues will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Tenders Section -->
+        <section id="tenders" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Government Tenders</h2>
+                    <p>Browse and participate in government tenders for civic solutions</p>
+                </div>
+
+                <div class="tenders-grid" id="tendersContainer">
+                    <!-- Tenders will be populated by JavaScript -->
+                </div>
+
+                <section class="companies-section">
+                    <h3>Registered Companies</h3>
+                    <div class="companies-grid" id="companiesContainer">
+                        <!-- Companies will be populated by JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>About Digital Civic Portal</h2>
+                    <p>Empowering citizens to participate in urban governance</p>
+                </div>
+
+                <div class="about-content">
+                    <div class="about-card">
+                        <h3>Our Mission</h3>
+                        <p>To create a transparent and efficient platform for citizens to report civic issues, track their resolution, and participate in the governance process through technology.</p>
+                    </div>
+                    <div class="about-card">
+                        <h3>Key Features</h3>
+                        <ul>
+                            <li>Easy issue reporting with photo upload</li>
+                            <li>Real-time tracking of issue resolution</li>
+                            <li>Transparent tender management system</li>
+                            <li>Direct communication with municipal departments</li>
+                            <li>Data-driven insights for better governance</li>
+                        </ul>
+                    </div>
+                    <div class="about-card">
+                        <h3>Departments</h3>
+                        <div id="departmentsContainer">
+                            <!-- Departments will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Contact & Support</h2>
+                    <p>Get help with your civic issues and portal usage</p>
+                </div>
+
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <h3>Helpdesk</h3>
+                        <p><strong>Phone:</strong> 1800-123-4567 (Toll Free)</p>
+                        <p><strong>Email:</strong> support@civicportal.gov.in</p>
+                        <p><strong>Hours:</strong> Mon-Fri, 9:00 AM - 6:00 PM</p>
+                    </div>
+                    <div class="contact-card">
+                        <h3>Emergency Issues</h3>
+                        <p><strong>Phone:</strong> 108 (24x7)</p>
+                        <p>For critical civic emergencies like water bursts, major road blockages, or public safety issues</p>
+                    </div>
+                    <div class="contact-card">
+                        <h3>Municipal Office</h3>
+                        <p><strong>Address:</strong> City Municipal Corporation<br>
+                        123 Civic Center, Main Road<br>
+                        New Delhi - 110001</p>
+                        <p><strong>Office Hours:</strong> Mon-Fri, 10:00 AM - 5:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="gov-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Digital Civic Portal</h4>
+                    <p>Government of India Initiative</p>
+                    <p>© 2025 All rights reserved</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#" onclick="showSection('report')">Report Issue</a></li>
+                        <li><a href="#" onclick="showSection('track')">Track Issues</a></li>
+                        <li><a href="#" onclick="showSection('tenders')">Tenders</a></li>
+                        <li><a href="#" onclick="showSection('about')">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li>Helpdesk: 1800-123-4567</li>
+                        <li>Emergency: 108</li>
+                        <li>Email: support@civicportal.gov.in</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Government Links</h4>
+                    <ul>
+                        <li><a href="https://www.india.gov.in/" target="_blank">National Portal of India</a></li>
+                        <li><a href="https://www.mygov.in/" target="_blank">MyGov</a></li>
+                        <li><a href="https://digitalindia.gov.in/" target="_blank">Digital India</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Issue Details -->
+    <div id="issueModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Issue Details</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div id="notification" class="notification hidden">
+        <div class="notification-content">
+            <span id="notificationText"></span>
+            <button onclick="closeNotification()">&times;</button>
+        </div>
+    </div>
+
+    <script src="interactive.js"></script>
+</body>
+</html>
