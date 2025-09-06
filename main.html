@@ -22,12 +22,6 @@
                     <div class="search-container">
                         <input type="text" id="headerSearch" placeholder="Search issues, tenders..." class="form-control search-input">
                         <button class="btn btn--primary search-btn">Search</button>
-                    </div>
-                    <div class="user-menu">
-                        <button class="btn btn--secondary" onclick="toggleUserRole()">
-                            <span id="currentRole">Citizen</span> ▼
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -38,7 +32,21 @@
         <div class="container">
             <ul class="nav-menu">
                 <li><a href="#" onclick="showSection('home')" class="nav-active">Home</a></li>
-                <li><a href="#" onclick="showSection('report')">Report Issue</a></li>
+                 <li><a href="#" onclick="showSection('complaintStatus')">Complaint Status</a></li>
+<section id="complaintStatus" class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Complaint Status</h2>
+      <p>Check the acceptance and progress of your complaint by entering its ID.</p>
+    </div>
+    <form id="complaintStatusForm">
+      <label for="complaintIdInput"><strong>Enter Complaint ID:</strong></label>
+      <input type="text" id="complaintIdInput" class="form-control" placeholder="e.g. CIV-2025-001" required>
+      <button type="submit" class="btn btn--primary">Check Status</button>
+    </form>
+    <div id="complaintStatusResult" style="margin-top:20px; font-weight:bold;"></div>
+  </div>
+</section>
                 <li><a href="#" onclick="showSection('track')">Track Issues</a></li>
                 <li><a href="#" onclick="showSection('tenders')">Tender Portal</a></li>
                 <li><a href="#" onclick="showSection('about')">About</a></li>
@@ -55,9 +63,8 @@
                 <div class="container">
                     <div class="hero-content">
                         <h2>Welcome to Digital Civic Portal</h2>
-                        <p>Report civic issues, track progress, and participate in government tenders</p>
+                        <p> track progress, and participate in government tenders</p>
                         <div class="quick-actions">
-                            <button class="btn btn--primary btn--lg" onclick="showSection('report')">Report New Issue</button>
                             <button class="btn btn--outline btn--lg" onclick="showSection('track')">Track My Issues</button>
                         </div>
                     </div>
@@ -75,48 +82,15 @@
 
                 <!-- Issue Categories -->
                 <section class="categories-section">
-                    <h3>Report Issues by Category</h3>
-                    <div class="categories-grid">
-                        <div class="category-card" onclick="selectIssueType('Pothole')">
-                            <div class="category-icon">🕳️</div>
-                            <h4>Potholes</h4>
-                            <p>Road maintenance issues</p>
-                        </div>
-                        <div class="category-card" onclick="selectIssueType('Street Light')">
-                            <div class="category-icon">💡</div>
-                            <h4>Street Lights</h4>
-                            <p>Lighting problems</p>
-                        </div>
-                        <div class="category-card" onclick="selectIssueType('Garbage')">
-                            <div class="category-icon">🗑️</div>
-                            <h4>Garbage</h4>
-                            <p>Waste collection issues</p>
-                        </div>
-                        <div class="category-card" onclick="selectIssueType('Water Supply')">
-                            <div class="category-icon">💧</div>
-                            <h4>Water Supply</h4>
-                            <p>Water related problems</p>
-                        </div>
-                        <div class="category-card" onclick="selectIssueType('Traffic Signal')">
-                            <div class="category-icon">🚦</div>
-                            <h4>Traffic</h4>
-                            <p>Traffic management</p>
-                        </div>
-                        <div class="category-card" onclick="selectIssueType('Other')">
-                            <div class="category-icon">📝</div>
-                            <h4>Other</h4>
-                            <p>General civic issues</p>
-                        </div>
-                    </div>
+                    
                 </section>
             </div>
         </section>
 
-        <!-- Report Issue Section -->
+        <!-- Report Issue Section
         <section id="report" class="section">
             <div class="container">
                 <div class="section-header">
-                    <h2>Report a Civic Issue</h2>
                     <p>Help us improve our city by reporting civic issues</p>
                 </div>
 
@@ -145,30 +119,8 @@
                                 <option value="Critical">Critical</option>
                             </select>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="form-group">
-                        <label class="form-label">Location *</label>
-                        <input type="text" id="issueLocation" class="form-control" placeholder="Enter location/address" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Description *</label>
-                        <textarea id="issueDescription" class="form-control" rows="4" placeholder="Describe the issue in detail" required></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Your Contact Number</label>
-                        <input type="tel" id="reporterPhone" class="form-control" placeholder="+91-XXXXXXXXXX">
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn--primary">Submit Issue Report</button>
-                        <button type="reset" class="btn btn--secondary">Clear Form</button>
-                    </div>
-                </form>
-            </div>
-        </section>
 
         <!-- Track Issues Section -->
         <section id="track" class="section">
@@ -238,7 +190,7 @@
                 <div class="about-content">
                     <div class="about-card">
                         <h3>Our Mission</h3>
-                        <p>To create a transparent and efficient platform for citizens to report civic issues, track their resolution, and participate in the governance process through technology.</p>
+                        <p>To create a transparent and efficient platform for citizens to track their resolution, and participate in the governance process through technology.</p>
                     </div>
                     <div class="about-card">
                         <h3>Key Features</h3>
@@ -304,7 +256,6 @@
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="#" onclick="showSection('report')">Report Issue</a></li>
                         <li><a href="#" onclick="showSection('track')">Track Issues</a></li>
                         <li><a href="#" onclick="showSection('tenders')">Tenders</a></li>
                         <li><a href="#" onclick="showSection('about')">About</a></li>
