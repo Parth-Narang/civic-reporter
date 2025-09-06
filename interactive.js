@@ -16,7 +16,7 @@ const appData = {
             contactNumber: "+91-9876543210"
         },
         {
-            id: "CIV-2025-002", 
+            id: "CIV-2025-002",
             type: "Street Light",
             location: "Park Avenue, Ward 8",
             description: "Street light not working for past 2 weeks",
@@ -132,7 +132,7 @@ const appData = {
             id: "TND-2025-102",
             title: "Street Lighting Installation and Maintenance",
             category: "Electrical",
-            budget: "₹25,00,000", 
+            budget: "₹25,00,000",
             description: "Installation of LED street lights and maintenance for 2 years",
             deadline: "2025-10-15",
             status: "Open",
@@ -143,7 +143,7 @@ const appData = {
         },
         {
             id: "TND-2025-103",
-            title: "Waste Management and Collection Services", 
+            title: "Waste Management and Collection Services",
             category: "Sanitation",
             budget: "₹75,00,000",
             description: "Comprehensive waste collection and management services for 3 years",
@@ -157,7 +157,7 @@ const appData = {
         {
             id: "TND-2025-104",
             title: "Water Pipeline Repair and Maintenance",
-            category: "Water Works", 
+            category: "Water Works",
             budget: "₹35,00,000",
             description: "Emergency repair services and preventive maintenance of water pipelines",
             deadline: "2025-10-05",
@@ -195,7 +195,7 @@ const appData = {
             specialization: "Road construction, Pothole repairs, Bridge maintenance"
         },
         {
-            id: "COMP-002", 
+            id: "COMP-002",
             name: "Bright Lights Solutions",
             category: "Electrical",
             rating: "4.2/5",
@@ -203,14 +203,14 @@ const appData = {
             completedProjects: 28,
             contactPerson: "Neha Gupta",
             contactNumber: "+91-8876543210",
-            email: "info@brightlights.com", 
+            email: "info@brightlights.com",
             specialization: "LED lighting, Street lamp installation, Electrical maintenance"
         },
         {
             id: "COMP-003",
             name: "Clean City Services",
             category: "Sanitation",
-            rating: "4.7/5", 
+            rating: "4.7/5",
             experience: "12 years",
             completedProjects: 35,
             contactPerson: "Manoj Sharma",
@@ -223,7 +223,7 @@ const appData = {
             name: "Aqua Works Corporation",
             category: "Water Works",
             rating: "4.3/5",
-            experience: "10 years", 
+            experience: "10 years",
             completedProjects: 32,
             contactPerson: "Deepak Patel",
             contactNumber: "+91-8654321098",
@@ -250,13 +250,13 @@ const appData = {
             description: "Citizens can now report civic issues digitally and track progress online"
         },
         {
-            title: "Smart Street Lighting Project Approved", 
+            title: "Smart Street Lighting Project Approved",
             date: "2025-08-28",
             description: "LED street lights to be installed across 50 locations in the city"
         },
         {
             title: "Waste Segregation Drive Begins",
-            date: "2025-08-25", 
+            date: "2025-08-25",
             description: "New initiative for household waste segregation launched in partnership with local NGOs"
         },
         {
@@ -274,9 +274,11 @@ const appData = {
     ]
 };
 
+
 // Global state
 let currentUserRole = 'Citizen';
 let filteredIssues = [...appData.issues];
+
 
 // Make functions global for onclick handlers
 window.showSection = showSection;
@@ -287,6 +289,7 @@ window.updateIssueStatus = updateIssueStatus;
 window.participateInTender = participateInTender;
 window.closeModal = closeModal;
 window.closeNotification = closeNotification;
+
 
 // Initialize application
 document.addEventListener('DOMContentLoaded', function() {
@@ -300,11 +303,13 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
 });
 
+
 function initializeApp() {
     console.log('App initialized');
     // Show home section by default
     showSection('home');
 }
+
 
 // Section Navigation
 function showSection(sectionName) {
@@ -345,6 +350,7 @@ function showSection(sectionName) {
     }
 }
 
+
 // User Role Management
 function toggleUserRole() {
     const roles = ['Citizen', 'Municipal Officer', 'Administrator'];
@@ -359,6 +365,7 @@ function toggleUserRole() {
     showNotification(`Switched to ${currentUserRole} role`, 'success');
 }
 
+
 function updateUIForRole() {
     // Show/hide admin features based on role
     const adminFeatures = document.querySelectorAll('.admin-only');
@@ -368,6 +375,7 @@ function updateUIForRole() {
         element.style.display = isAdmin ? 'block' : 'none';
     });
 }
+
 
 // Issue Category Selection
 function selectIssueType(type) {
@@ -380,6 +388,7 @@ function selectIssueType(type) {
         }
     }, 100);
 }
+
 
 // Load News Data
 function loadNewsData() {
@@ -394,6 +403,7 @@ function loadNewsData() {
         </div>
     `).join('');
 }
+
 
 // Load Issues Data
 function loadIssuesData() {
@@ -416,6 +426,7 @@ function loadIssuesData() {
         </div>
     `).join('');
 }
+
 
 // Load Tenders Data
 function loadTendersData() {
@@ -463,6 +474,7 @@ function loadTendersData() {
     `).join('');
 }
 
+
 // Load Companies Data
 function loadCompaniesData() {
     const container = document.getElementById('companiesContainer');
@@ -493,6 +505,7 @@ function loadCompaniesData() {
     `).join('');
 }
 
+
 // Load Departments Data
 function loadDepartmentsData() {
     const container = document.getElementById('departmentsContainer');
@@ -505,6 +518,7 @@ function loadDepartmentsData() {
         </div>
     `).join('');
 }
+
 
 // Show Issue Details Modal
 function showIssueDetails(issueId) {
@@ -569,6 +583,7 @@ function showIssueDetails(issueId) {
     document.getElementById('issueModal').classList.remove('hidden');
 }
 
+
 // Update Issue Status (Admin function)
 function updateIssueStatus(issueId, newStatus) {
     if (currentUserRole === 'Citizen') {
@@ -594,6 +609,7 @@ function updateIssueStatus(issueId, newStatus) {
     }
 }
 
+
 // Participate in Tender
 function participateInTender(tenderId) {
     const tender = appData.tenders.find(t => t.id === tenderId);
@@ -607,11 +623,12 @@ function participateInTender(tenderId) {
     showNotification(`Participation request submitted for ${tender.title}`, 'success');
 }
 
+
 // Event Listeners
 function setupEventListeners() {
     console.log('Setting up event listeners...');
     
-    // Issue Report Form
+    // Remove issueReportForm listener if "Report Issue" is removed
     const reportForm = document.getElementById('issueReportForm');
     if (reportForm) {
         reportForm.addEventListener('submit', handleIssueSubmission);
@@ -650,6 +667,7 @@ function setupEventListeners() {
     }
 }
 
+
 // Handle Issue Report Submission
 function handleIssueSubmission(e) {
     e.preventDefault();
@@ -687,6 +705,7 @@ function handleIssueSubmission(e) {
     }, 2000);
 }
 
+
 // Filter Issues
 function filterIssues() {
     const searchTerm = document.getElementById('trackingSearch')?.value.toLowerCase() || '';
@@ -694,7 +713,7 @@ function filterIssues() {
     const typeFilter = document.getElementById('typeFilter')?.value || '';
     
     filteredIssues = appData.issues.filter(issue => {
-        const matchesSearch = searchTerm === '' || 
+        const matchesSearch = searchTerm === '' ||
             issue.id.toLowerCase().includes(searchTerm) ||
             issue.location.toLowerCase().includes(searchTerm) ||
             issue.type.toLowerCase().includes(searchTerm) ||
@@ -708,6 +727,7 @@ function filterIssues() {
     
     loadIssuesData();
 }
+
 
 // Header Search
 function performHeaderSearch() {
@@ -737,6 +757,7 @@ function performHeaderSearch() {
     document.getElementById('headerSearch').value = '';
 }
 
+
 // Helper Functions
 function getDepartmentForType(type) {
     const departmentMapping = {
@@ -751,6 +772,7 @@ function getDepartmentForType(type) {
     return departmentMapping[type] || 'General Administration';
 }
 
+
 function getContactPersonForType(type) {
     const contactMapping = {
         'Pothole': 'Rajesh Kumar',
@@ -763,6 +785,7 @@ function getContactPersonForType(type) {
     };
     return contactMapping[type] || 'Municipal Officer';
 }
+
 
 function getContactNumberForType(type) {
     const numberMapping = {
@@ -777,21 +800,25 @@ function getContactNumberForType(type) {
     return numberMapping[type] || '+91-9000000000';
 }
 
+
 function getEstimatedResolution() {
     const today = new Date();
     const resolutionDate = new Date(today.getTime() + (Math.random() * 15 + 5) * 24 * 60 * 60 * 1000);
     return resolutionDate.toISOString().split('T')[0];
 }
 
+
 function formatDate(dateString) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-IN', options);
 }
 
+
 // Modal Functions
 function closeModal() {
     document.getElementById('issueModal').classList.add('hidden');
 }
+
 
 // Notification Functions
 function showNotification(message, type = 'success') {
@@ -811,12 +838,14 @@ function showNotification(message, type = 'success') {
     }
 }
 
+
 function closeNotification() {
     const notification = document.getElementById('notification');
     if (notification) {
         notification.classList.add('hidden');
     }
 }
+
 
 // Close modal when clicking outside
 document.addEventListener('click', function(e) {
@@ -826,9 +855,39 @@ document.addEventListener('click', function(e) {
     }
 });
 
+
 // Close modal with Escape key
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeModal();
     }
+    // Complaint Status Check Handler
+document.getElementById('complaintStatusForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  var inputId = document.getElementById('complaintIdInput').value.trim().toUpperCase();
+  var resultDiv = document.getElementById('complaintStatusResult');
+
+  var complaint = appData.issues.find(issue => issue.id === inputId);
+
+  if (!complaint) {
+    resultDiv.textContent = `Complaint ID "${inputId}" not found.`;
+    resultDiv.style.color = 'red';
+  } else {
+    // Map internal status to display status if needed
+    let displayStatus = '';
+    if (complaint.status === 'Submitted' || complaint.status === 'Under Review' || complaint.status === 'Approved') {
+      displayStatus = 'Accepted';
+    } else if (complaint.status === 'In Progress') {
+      displayStatus = 'Working';
+    } else if (complaint.status === 'Resolved' || complaint.status === 'Closed') {
+      displayStatus = 'Resolved';
+    } else {
+      displayStatus = complaint.status;
+    }
+    resultDiv.textContent = `Status: ${displayStatus} (Current Stage: ${complaint.status})`;
+    resultDiv.style.color = 'green';
+  }
+});
+
 });
