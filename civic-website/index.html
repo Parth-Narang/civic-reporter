@@ -3,507 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Municipal Civic Engagement Platform</title>
-    <meta name="description" content="Report and track municipal issues in real-time. Empowering citizens to improve their community.">
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
+    <title>CivicReport - Municipal Issue Reporting System</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Header -->
+    <!-- Navigation Header -->
     <header class="header">
         <div class="container">
-            <div class="header__content">
-                <div class="header__logo">
-                    <span class="header__icon">🏛️</span>
-                    <span class="header__title">CivicConnect</span>
+            <nav class="navbar">
+                <div class="navbar-brand">
+                    <h1>🏛️ CivicReport</h1>
                 </div>
-                <nav class="nav">
-                    <button class="nav__toggle" id="navToggle" aria-label="Toggle navigation">
-                        <span class="nav__hamburger"></span>
-                    </button>
-                    <ul class="nav__menu" id="navMenu">
-                        <li><a href="#home" class="nav__link" data-section="home">Home</a></li>
-                        <li><a href="#report" class="nav__link" data-section="report">Report Issue</a></li>
-                        <li><a href="#track" class="nav__link" data-section="track">Track Issues</a></li>
-                        <li><a href="#map" class="nav__link" data-section="map">Map View</a></li>
-                        <li><a href="#analytics" class="nav__link" data-section="analytics">Analytics</a></li>
-                        <li><a href="#admin" class="nav__link" data-section="admin">Admin Portal</a></li>
-                    </ul>
-                </nav>
-            </div>
+                <div class="navbar-menu">
+                    <button class="btn btn--sm btn--outline nav-btn" data-view="dashboard">Dashboard</button>
+                    <button class="btn btn--sm btn--outline nav-btn" data-view="report">Report Issue</button>
+                    <button class="btn btn--sm btn--outline nav-btn" data-view="track">Track Issues</button>
+                    <button class="btn btn--sm btn--outline nav-btn" data-view="admin">Admin</button>
+                    <button class="theme-toggle btn btn--sm btn--outline" aria-label="Toggle dark mode">🌙</button>
+                </div>
+                <button class="mobile-menu-toggle btn btn--sm btn--outline">☰</button>
+            </nav>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="main">
-        <!-- Home Section -->
-        <section id="home" class="section section--active">
+    <!-- Main Content Container -->
+    <main class="main-content">
+        
+        <!-- Dashboard View -->
+        <section id="dashboard-view" class="view active">
             <div class="container">
-                <div class="hero">
-                    <div class="hero__content">
-                        <h1 class="hero__title">Making Your Community Better, One Report at a Time</h1>
-                        <p class="hero__subtitle">Report municipal issues instantly and track their resolution. Connect with your local government for a more responsive community.</p>
-                        <div class="hero__actions">
-                            <button class="btn btn--primary btn--lg" data-section="report">Report an Issue</button>
-                            <button class="btn btn--outline btn--lg" data-section="track">Track Progress</button>
-                        </div>
+                <!-- Hero Section -->
+                <section class="hero">
+                    <div class="hero-content">
+                        <h2>Report Civic Issues in Your Community</h2>
+                        <p class="hero-subtitle">Help make your city better by reporting infrastructure problems, safety concerns, and maintenance issues directly to municipal departments.</p>
+                        <button class="btn btn--primary btn--lg cta-button" data-view="report">Report an Issue</button>
                     </div>
-                    <div class="hero__stats">
-                        <div class="stat-card">
-                            <div class="stat-card__value">156</div>
-                            <div class="stat-card__label">Total Issues</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-card__value">124</div>
-                            <div class="stat-card__label">Resolved</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-card__value">4.2</div>
-                            <div class="stat-card__label">Avg Days</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-card__value">87%</div>
-                            <div class="stat-card__label">Satisfaction</div>
-                        </div>
-                    </div>
-                </div>
+                </section>
 
-                <div class="features">
-                    <h2>How It Works</h2>
-                    <div class="features__grid">
-                        <div class="feature-card">
-                            <div class="feature-card__icon">📱</div>
-                            <h3>See & Report</h3>
-                            <p>Spot an issue? Take a photo and submit a report with location details in seconds.</p>
+                <!-- Statistics Dashboard -->
+                <section class="stats-section">
+                    <h3>System Overview</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" data-stat="totalIssues">1,247</div>
+                            <div class="stat-label">Total Issues</div>
                         </div>
-                        <div class="feature-card">
-                            <div class="feature-card__icon">👥</div>
-                            <h3>Community Support</h3>
-                            <p>Vote on issues and add comments to help prioritize community concerns.</p>
+                        <div class="stat-card">
+                            <div class="stat-number" data-stat="openIssues">89</div>
+                            <div class="stat-label">Open Issues</div>
                         </div>
-                        <div class="feature-card">
-                            <div class="feature-card__icon">🔧</div>
-                            <h3>Get It Fixed</h3>
-                            <p>Track progress in real-time and receive notifications when issues are resolved.</p>
+                        <div class="stat-card">
+                            <div class="stat-number" data-stat="inProgress">34</div>
+                            <div class="stat-label">In Progress</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" data-stat="resolved">1,124</div>
+                            <div class="stat-label">Resolved</div>
                         </div>
                     </div>
-                </div>
+                </section>
+
+                <!-- Recent Issues Feed -->
+                <section class="recent-issues">
+                    <h3>Recent Issues</h3>
+                    <div class="issues-feed" id="recent-issues-feed">
+                        <!-- Issues will be populated by JavaScript -->
+                    </div>
+                </section>
             </div>
         </section>
 
-        <!-- Report Issue Section -->
-        <section id="report" class="section">
+        <!-- Report Issue View -->
+        <section id="report-view" class="view">
             <div class="container">
-                <div class="section-header">
-                    <h1>Report an Issue</h1>
-                    <p>Help make your community better by reporting issues that need attention.</p>
+                <div class="report-header">
+                    <h2>Report a Civic Issue</h2>
+                    <p>Help us improve your community by reporting problems that need attention.</p>
                 </div>
-
-                <form class="report-form" id="reportForm">
-                    <div class="form-group">
-                        <label for="issueTitle" class="form-label">Issue Title *</label>
-                        <input type="text" id="issueTitle" class="form-control" required placeholder="Brief description of the issue">
+                
+                <form class="report-form" id="issue-report-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="issue-category">Issue Category *</label>
+                            <select class="form-control" id="issue-category" required>
+                                <option value="">Select a category...</option>
+                                <!-- Categories will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="issue-priority">Priority Level</label>
+                            <select class="form-control" id="issue-priority">
+                                <option value="low">Low - Minor inconvenience</option>
+                                <option value="medium" selected>Medium - Moderate concern</option>
+                                <option value="high">High - Safety hazard</option>
+                                <option value="urgent">Urgent - Immediate danger</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="issueCategory" class="form-label">Category *</label>
-                        <select id="issueCategory" class="form-control" required>
-                            <option value="">Select category</option>
-                            <option value="Roads & Transportation">Roads & Transportation</option>
-                            <option value="Lighting">Lighting</option>
-                            <option value="Waste Management">Waste Management</option>
-                            <option value="Water & Sewage">Water & Sewage</option>
-                            <option value="Parks & Recreation">Parks & Recreation</option>
-                            <option value="Public Safety">Public Safety</option>
-                            <option value="Building & Construction">Building & Construction</option>
-                            <option value="Environmental">Environmental</option>
-                        </select>
+                        <label class="form-label" for="issue-title">Issue Title *</label>
+                        <input type="text" class="form-control" id="issue-title" placeholder="Brief description of the issue" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="issuePriority" class="form-label">Priority Level *</label>
-                        <select id="issuePriority" class="form-control" required>
-                            <option value="">Select priority</option>
-                            <option value="Low">Low</option>
-                            <option value="Medium">Medium</option>
-                            <option value="High">High</option>
-                            <option value="Critical">Critical</option>
-                        </select>
+                        <label class="form-label" for="issue-location">Location *</label>
+                        <input type="text" class="form-control" id="issue-location" placeholder="Street address or landmark" required>
+                        <button type="button" class="btn btn--sm btn--outline location-btn" id="get-location">📍 Use GPS Location</button>
                     </div>
 
                     <div class="form-group">
-                        <label for="issueLocation" class="form-label">Location *</label>
-                        <input type="text" id="issueLocation" class="form-control" required placeholder="Street address or nearby landmark">
+                        <label class="form-label" for="issue-description">Description *</label>
+                        <textarea class="form-control" id="issue-description" rows="4" placeholder="Provide detailed information about the issue..." required></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label for="issueDescription" class="form-label">Description *</label>
-                        <textarea id="issueDescription" class="form-control" rows="4" required placeholder="Detailed description of the issue"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="issuePhoto" class="form-label">Photo</label>
-                        <input type="file" id="issuePhoto" class="form-control" accept="image/*">
-                        <div class="form-help">Upload a photo to help identify the issue</div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reporterName" class="form-label">Your Name *</label>
-                        <input type="text" id="reporterName" class="form-control" required placeholder="Your full name">
-                    </div>
-
-                    <div class="form-group">
-                        <div class="voice-note-placeholder">
-                            <div class="voice-note-icon">🎤</div>
-                            <div class="voice-note-text">Voice note feature available in mobile app</div>
+                        <label class="form-label">Photos (Optional)</label>
+                        <div class="photo-upload-area" id="photo-upload">
+                            <div class="upload-placeholder">
+                                <div class="upload-icon">📷</div>
+                                <p>Drag photos here or click to browse</p>
+                                <input type="file" id="photo-input" multiple accept="image/*" hidden>
+                            </div>
+                            <div class="photo-preview" id="photo-preview"></div>
                         </div>
                     </div>
 
                     <div class="form-actions">
-                        <button type="submit" class="btn btn--primary btn--full-width">Submit Report</button>
+                        <button type="button" class="btn btn--outline" data-view="dashboard">Cancel</button>
+                        <button type="submit" class="btn btn--primary" id="submit-report">
+                            <span class="submit-text">Submit Report</span>
+                            <span class="submit-loading hidden">Submitting...</span>
+                        </button>
                     </div>
                 </form>
-
-                <div id="reportSuccess" class="success-message hidden">
-                    <div class="success-icon">✅</div>
-                    <h3>Report Submitted Successfully!</h3>
-                    <p>Your report has been received and assigned ID: <strong id="ticketNumber"></strong></p>
-                    <p>You can track its progress using this ID.</p>
-                    <button class="btn btn--primary" data-section="track">Track This Issue</button>
-                </div>
             </div>
         </section>
 
-        <!-- Track Issues Section -->
-        <section id="track" class="section">
+        <!-- Track Issues View -->
+        <section id="track-view" class="view">
             <div class="container">
-                <div class="section-header">
-                    <h1>Track Issues</h1>
-                    <p>Search and monitor the progress of reported issues in your community.</p>
-                </div>
-
-                <div class="search-controls">
-                    <div class="search-bar">
-                        <input type="text" id="issueSearch" class="form-control" placeholder="Search by ID, location, or description">
-                        <button class="btn btn--primary" id="searchBtn">Search</button>
-                    </div>
-                    <div class="filters">
-                        <select id="statusFilter" class="form-control">
+                <div class="track-header">
+                    <h2>Track Your Issues</h2>
+                    <div class="track-controls">
+                        <input type="text" class="form-control search-input" id="issue-search" placeholder="Search issues...">
+                        <select class="form-control filter-select" id="status-filter">
                             <option value="">All Statuses</option>
-                            <option value="Pending">Pending</option>
-                            <option value="Assigned">Assigned</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Under Review">Under Review</option>
-                            <option value="Resolved">Resolved</option>
-                            <option value="Closed">Closed</option>
-                        </select>
-                        <select id="categoryFilter" class="form-control">
-                            <option value="">All Categories</option>
-                            <option value="Roads & Transportation">Roads & Transportation</option>
-                            <option value="Lighting">Lighting</option>
-                            <option value="Waste Management">Waste Management</option>
-                            <option value="Water & Sewage">Water & Sewage</option>
-                            <option value="Parks & Recreation">Parks & Recreation</option>
-                            <option value="Public Safety">Public Safety</option>
-                            <option value="Building & Construction">Building & Construction</option>
-                            <option value="Environmental">Environmental</option>
+                            <option value="submitted">Submitted</option>
+                            <option value="assigned">Assigned</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="resolved">Resolved</option>
                         </select>
                     </div>
                 </div>
-
-                <div class="issues-list" id="issuesList">
+                
+                <div class="issues-list" id="issues-list">
                     <!-- Issues will be populated by JavaScript -->
                 </div>
             </div>
         </section>
 
-        <!-- Map View Section -->
-        <section id="map" class="section">
+        <!-- Admin Dashboard View -->
+        <section id="admin-view" class="view">
             <div class="container">
-                <div class="section-header">
-                    <h1>Issue Map</h1>
-                    <p>Visual overview of all reported issues across the city.</p>
+                <div class="admin-header">
+                    <h2>Municipal Admin Dashboard</h2>
+                    <p>Manage and route civic issues to appropriate departments.</p>
+                </div>
+                
+                <div class="admin-stats">
+                    <div class="admin-stat-grid">
+                        <div class="admin-stat-card">
+                            <h4>Response Time</h4>
+                            <div class="admin-stat-value">2.3 days</div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <h4>Satisfaction</h4>
+                            <div class="admin-stat-value">87%</div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <h4>This Month</h4>
+                            <div class="admin-stat-value">67 reports</div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="map-controls">
-                    <div class="map-filters">
-                        <select id="mapCategoryFilter" class="form-control">
-                            <option value="">All Categories</option>
-                            <option value="Roads & Transportation">Roads & Transportation</option>
-                            <option value="Lighting">Lighting</option>
-                            <option value="Waste Management">Waste Management</option>
+                <div class="admin-content">
+                    <div class="admin-filters">
+                        <select class="form-control" id="admin-department-filter">
+                            <option value="">All Departments</option>
+                            <option value="Public Works">Public Works</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Sanitation">Sanitation</option>
                         </select>
-                        <select id="mapStatusFilter" class="form-control">
+                        <select class="form-control" id="admin-status-filter">
                             <option value="">All Statuses</option>
-                            <option value="Pending">Pending</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Resolved">Resolved</option>
+                            <option value="submitted">Submitted</option>
+                            <option value="assigned">Assigned</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="resolved">Resolved</option>
                         </select>
+                        <button class="btn btn--outline" id="bulk-assign">Bulk Assign</button>
                     </div>
-                    <div class="map-legend">
-                        <div class="legend-item">
-                            <span class="legend-color legend-color--high"></span>
-                            <span>High Priority</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color legend-color--medium"></span>
-                            <span>Medium Priority</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color legend-color--low"></span>
-                            <span>Low Priority</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="map-container">
-                    <div class="city-map" id="cityMap">
-                        <div class="map-pin map-pin--high" data-issue="ISS-2025-001" style="top: 60%; left: 30%;">
-                            <span class="map-pin__label">1</span>
-                        </div>
-                        <div class="map-pin map-pin--medium" data-issue="ISS-2025-002" style="top: 25%; left: 70%;">
-                            <span class="map-pin__label">2</span>
-                        </div>
-                        <div class="map-pin map-pin--low" data-issue="ISS-2025-003" style="top: 15%; left: 45%;">
-                            <span class="map-pin__label">3</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="map-stats">
-                    <div class="stat-card">
-                        <div class="stat-card__value">3</div>
-                        <div class="stat-card__label">Total Visible</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card__value">1</div>
-                        <div class="stat-card__label">High Priority</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card__value">1</div>
-                        <div class="stat-card__label">In Progress</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card__value">1</div>
-                        <div class="stat-card__label">Resolved</div>
-                    </div>
-                </div>
-
-                <!-- Map Issue Details Modal -->
-                <div id="mapModal" class="modal hidden">
-                    <div class="modal__content">
-                        <div class="modal__header">
-                            <h3 id="modalTitle">Issue Details</h3>
-                            <button class="modal__close" id="closeModal">&times;</button>
-                        </div>
-                        <div class="modal__body" id="modalBody">
-                            <!-- Content populated by JavaScript -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Analytics Section -->
-        <section id="analytics" class="section">
-            <div class="container">
-                <div class="section-header">
-                    <h1>Municipal Analytics</h1>
-                    <p>Performance metrics and insights for municipal issue resolution.</p>
-                </div>
-
-                <div class="analytics-grid">
-                    <div class="analytics-card">
-                        <h3>Issue Categories</h3>
-                        <div class="chart-container" style="position: relative; height: 300px;">
-                            <canvas id="categoryChart"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="analytics-card">
-                        <h3>Resolution Timeline</h3>
-                        <div class="chart-container" style="position: relative; height: 300px;">
-                            <canvas id="timelineChart"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="analytics-card">
-                        <h3>Department Performance</h3>
-                        <div class="chart-container" style="position: relative; height: 300px;">
-                            <canvas id="departmentChart"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="analytics-card">
-                        <h3>Key Metrics</h3>
-                        <div class="metrics-grid">
-                            <div class="metric">
-                                <div class="metric__value">156</div>
-                                <div class="metric__label">Total Issues</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric__value">79.5%</div>
-                                <div class="metric__label">Resolution Rate</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric__value">4.2</div>
-                                <div class="metric__label">Avg Resolution Days</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric__value">87%</div>
-                                <div class="metric__label">Satisfaction Rate</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Admin Portal Section -->
-        <section id="admin" class="section">
-            <div class="container">
-                <div class="section-header">
-                    <h1>Admin Portal</h1>
-                    <p>Municipal staff dashboard for managing and resolving issues.</p>
-                </div>
-
-                <!-- Admin Login Simulation -->
-                <div id="adminLogin" class="admin-login">
-                    <div class="card">
-                        <div class="card__body">
-                            <h3>Staff Login</h3>
-                            <form id="adminLoginForm">
-                                <div class="form-group">
-                                    <label for="adminUsername" class="form-label">Username</label>
-                                    <input type="text" id="adminUsername" class="form-control" placeholder="staff@city.gov">
-                                </div>
-                                <div class="form-group">
-                                    <label for="adminPassword" class="form-label">Password</label>
-                                    <input type="password" id="adminPassword" class="form-control" placeholder="Enter password">
-                                </div>
-                                <button type="submit" class="btn btn--primary btn--full-width">Login</button>
-                            </form>
-                            <div class="form-help">Demo credentials: admin / admin123</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Admin Dashboard -->
-                <div id="adminDashboard" class="admin-dashboard hidden">
-                    <div class="admin-header">
-                        <h2>Welcome, Municipal Staff</h2>
-                        <button id="adminLogout" class="btn btn--outline">Logout</button>
-                    </div>
-
-                    <div class="admin-stats">
-                        <div class="stat-card">
-                            <div class="stat-card__value">32</div>
-                            <div class="stat-card__label">Pending Issues</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-card__value">24</div>
-                            <div class="stat-card__label">In Progress</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-card__value">8</div>
-                            <div class="stat-card__label">Overdue</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-card__value">156</div>
-                            <div class="stat-card__label">Total This Month</div>
-                        </div>
-                    </div>
-
-                    <div class="admin-controls">
-                        <div class="admin-filters">
-                            <select id="adminStatusFilter" class="form-control">
-                                <option value="">All Statuses</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Assigned">Assigned</option>
-                                <option value="In Progress">In Progress</option>
-                                <option value="Under Review">Under Review</option>
-                            </select>
-                            <select id="adminDepartmentFilter" class="form-control">
-                                <option value="">All Departments</option>
-                                <option value="Public Works">Public Works</option>
-                                <option value="Electrical Services">Electrical Services</option>
-                                <option value="Sanitation">Sanitation</option>
-                            </select>
-                            <select id="adminPriorityFilter" class="form-control">
-                                <option value="">All Priorities</option>
-                                <option value="Critical">Critical</option>
-                                <option value="High">High</option>
-                                <option value="Medium">Medium</option>
-                                <option value="Low">Low</option>
-                            </select>
-                        </div>
-                        <button class="btn btn--primary" id="refreshIssues">Refresh</button>
-                    </div>
-
-                    <div class="admin-issues-list" id="adminIssuesList">
+                    
+                    <div class="admin-issues-list" id="admin-issues-list">
                         <!-- Admin issues will be populated by JavaScript -->
-                    </div>
-                </div>
-
-                <!-- Issue Management Modal -->
-                <div id="adminModal" class="modal hidden">
-                    <div class="modal__content modal__content--large">
-                        <div class="modal__header">
-                            <h3 id="adminModalTitle">Manage Issue</h3>
-                            <button class="modal__close" id="closeAdminModal">&times;</button>
-                        </div>
-                        <div class="modal__body" id="adminModalBody">
-                            <!-- Content populated by JavaScript -->
-                        </div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer__content">
-                <div class="footer__section">
-                    <h4>Contact Information</h4>
-                    <p>📧 contact@civicengagement.gov</p>
-                    <p>📞 (555) 123-4567</p>
-                    <p>📍 123 Municipal Building, City Hall, State 12345</p>
-                </div>
-                <div class="footer__section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#" target="_blank">Privacy Policy</a></li>
-                        <li><a href="#" target="_blank">Terms of Service</a></li>
-                        <li><a href="#" target="_blank">Accessibility Statement</a></li>
-                        <li><a href="#" target="_blank">GDPR Compliance</a></li>
-                    </ul>
-                </div>
-                <div class="footer__section">
-                    <h4>Connect With Us</h4>
-                    <div class="social-links">
-                        <a href="#" target="_blank" aria-label="Facebook">📘</a>
-                        <a href="#" target="_blank" aria-label="Twitter">🐦</a>
-                        <a href="#" target="_blank" aria-label="LinkedIn">💼</a>
-                    </div>
-                </div>
+    <!-- Issue Detail Modal -->
+    <div class="modal hidden" id="issue-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Issue Details</h3>
+                <button class="modal-close" aria-label="Close modal">&times;</button>
             </div>
-            <div class="footer__bottom">
-                <p>&copy; 2025 Municipal Civic Engagement Platform. All rights reserved.</p>
+            <div class="modal-body" id="modal-body">
+                <!-- Content populated by JavaScript -->
             </div>
-        </div>
-    </footer>
-
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="loading-overlay hidden">
-        <div class="loading-spinner">
-            <div class="spinner"></div>
-            <p>Processing...</p>
+            <div class="modal-footer">
+                <button class="btn btn--outline modal-close">Close</button>
+                <button class="btn btn--primary" id="modal-action">Update Status</button>
+            </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 CivicReport Municipal System. Empowering communities through civic engagement.</p>
+        </div>
+    </footer>
+
     <script src="app.js"></script>
 </body>
 </html>
