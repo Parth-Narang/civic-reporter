@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/civic-website/index.html" },
+    { "source": "/admin", "destination": "/gov-website/main.html" }
+  ]
+}
